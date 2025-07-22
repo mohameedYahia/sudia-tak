@@ -459,14 +459,14 @@
                     <div id="dashboard" class="page-content hidden">
                          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                             <div class="bg-white p-5 rounded-xl shadow-lg text-center"><p class="text-4xl font-bold" style="color: var(--olive-dark);" id="kpi-total"></p><p class="text-gray-500 mt-1">إجمالي المشاريع</p></div>
-                            <div class="bg-white p-5 rounded-xl shadow-lg text-center"><p class="text-4xl font-bold" style="color: var(--gold-accent);" id="kpi-ongoing"></p><p class="text-gray-500 mt-1">جاري طرحها</p></div>
+                            <div class="bg-white p-5 rounded-xl shadow-lg text-center"><p class="text-4xl font-bold" style="color: var(--gold-accent);" id="kpi-ongoing"></p><p class="text-gray-500 mt-1">جاهزة للطرح</p></div>
                             <div class="bg-white p-5 rounded-xl shadow-lg text-center"><p class="text-4xl font-bold text-gray-500" id="kpi-previous"></p><p class="text-gray-500 mt-1">سابقة</p></div>
                             <div class="bg-white p-5 rounded-xl shadow-lg text-center"><p class="text-4xl font-bold text-blue-600" id="kpi-proposed"></p><p class="text-gray-500 mt-1">مقترحة</p></div>
                          </div>
                          <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
                             <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow-lg"><h3 class="font-bold text-lg" style="color: var(--olive-dark);">توزيع المشاريع حسب المنطقة</h3><div class="chart-container"><canvas id="barChart"></canvas></div></div>
                             <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg">
-                                <h3 class="font-bold text-lg mb-4" style="color: var(--olive-dark);">نسبة الإنجاز في المشاريع الجاري طرحها</h3>
+                                <h3 class="font-bold text-lg mb-4" style="color: var(--olive-dark);">نسبة الإنجاز في المشاريع الجاهزة للطرح</h3>
                                 <div id="average-completion-container" class="flex items-center justify-center mb-6">
                                     <!-- Circular progress will be injected here -->
                                 </div>
@@ -518,33 +518,18 @@
 
                     <!-- Tendering Page Content -->
                     <div id="tendering-sub" class="page-content hidden">
-                        <div id="tendering-cards-view">
-                            <h2 class="text-2xl font-bold mb-6" style="color: var(--olive-dark);">إعداد مشروع</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                <div id="show-tender-new-project-page" class="functional-card cursor-pointer bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
-                                    <div class="w-20 h-20 rounded-full bg-cyan-100 flex items-center justify-center mb-4"><span class="text-4xl">🚀</span></div>
-                                    <h3 class="font-bold text-xl portal-theme-text">إعداد مشروع جديد</h3>
-                                    <p class="text-sm text-gray-500 mt-2">مساحة عمل لإعداد وطرح مشاريع متعددة.</p>
-                                </div>
-                            </div>
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold" style="color: var(--olive-dark);">المشاريع قيد التحضير</h2>
+                            <button id="add-staged-project-btn" class="bg-blue-600 text-white text-sm rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors flex items-center gap-2">
+                                <span>+</span> إضافة مشروع للتحضير
+                            </button>
                         </div>
-                        <div id="tender-new-project-page" class="hidden">
-                            <div class="flex justify-between items-center mb-6">
-                                <div>
-                                    <h2 class="text-2xl font-bold" style="color: var(--olive-dark);">تحضير المشاريع للطرح</h2>
-                                    <p class="text-gray-500">أضف مشاريعك هنا، جهّز ملفاتها، ثم قم بطرحها بشكل فردي.</p>
-                                </div>
-                                <button class="back-to-tendering-cards bg-gray-800 text-white text-sm rounded-lg px-4 py-2 hover:bg-black transition-colors">→ الرجوع</button>
-                            </div>
-                            <div class="mb-6">
-                                 <button id="add-staged-project-btn" class="w-full bg-blue-600 text-white font-bold text-lg rounded-lg px-8 py-3 hover:bg-blue-700 transition-colors flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                                    <span>➕</span>
-                                    <span>إضافة مشروع للتحضير</span>
-                                </button>
-                            </div>
-                            <div id="staged-projects-container" class="space-y-4">
-                            </div>
-                            <p id="no-staged-projects-msg" class="text-center text-gray-500 py-10">لا توجد مشاريع قيد التحضير. ابدأ بإضافة مشروع جديد.</p>
+                        <div id="staged-projects-container" class="space-y-4">
+                            <!-- Staged projects will be rendered here by JS -->
+                        </div>
+                        <div id="no-staged-projects-msg" class="hidden text-center p-10 bg-white rounded-xl shadow">
+                            <p class="text-gray-500">لا توجد مشاريع قيد التحضير حالياً.</p>
+                            <p class="text-gray-400 text-sm mt-2">انقر على "إضافة مشروع للتحضير" لبدء العمل على مشروع جديد.</p>
                         </div>
                     </div>
                     
@@ -1251,6 +1236,23 @@
         </div>
     </div>
     
+    <!-- Add Staged Project Modal -->
+    <div id="addStagedProjectModal" class="fixed inset-0 bg-black bg-opacity-60 z-50 hidden items-center justify-center p-4 modal-backdrop">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl modal-content">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h3 class="text-xl font-bold portal-theme-text">اختر مشروعاً لإضافته للتحضير</h3>
+                <button type="button" class="close-modal text-gray-400">&times;</button>
+            </div>
+            <div id="staged-project-selection-list" class="p-6 max-h-[60vh] overflow-y-auto">
+                <!-- Project list will be populated here -->
+            </div>
+            <div class="p-4 bg-gray-50 border-t flex justify-end">
+                <button type="button" class="close-modal bg-gray-200 text-gray-700 rounded-lg px-4 py-2 hover:bg-gray-300">إلغاء</button>
+                <button type="button" id="confirm-add-staged-project" class="text-white rounded-lg px-4 py-2 mr-2" style="background-color: var(--olive-dark);">إضافة المحدد</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             
@@ -1352,8 +1354,8 @@
                         { id: 2, name: 'بناء مجمع سكني', type: 'انشاءات', region: 'منطقة الرياض', status: 'المشاريع السابقة', docs: [201], completion: 100 },
                         { id: 3, name: 'ترميم مبنى تاريخي', type: 'ترميمات', region: 'منطقة المدينة المنورة', status: 'المشاريع السابقة', docs: [301], completion: 100 },
                         { id: 4, name: 'توريد أجهزة حاسب', type: 'توريدات', region: 'منطقة الرياض', status: 'المشاريع المقترحة', docs: [], completion: 5 },
-                        { id: 5, name: 'إنشاء حديقة عامة', type: 'انشاءات', region: 'منطقة الرياض', status: 'المشاريع الجاري طرحها', docs: [501, 502], completion: 75 },
-                        { id: 6, name: 'توريد أثاث مكتبي', type: 'توريدات', region: 'منطقة مكة المكرمة', status: 'المشاريع الجاري طرحها', docs: [], completion: 40 },
+                        { id: 5, name: 'إنشاء حديقة عامة', type: 'انشاءات', region: 'منطقة الرياض', status: 'مشاريع جاهزة للطرح', docs: [501, 502], completion: 75 },
+                        { id: 6, name: 'توريد أثاث مكتبي', type: 'توريدات', region: 'منطقة مكة المكرمة', status: 'مشاريع جاهزة للطرح', docs: [], completion: 40 },
                         { id: 7, name: 'دراسة إنشاء مركز بيانات', type: 'انشاءات', region: 'المنطقة الشرقية', status: 'مشاريع جاري دراستها', docs: [], completion: 15 },
                         { id: 8, name: 'خطة توسعة السجون 2030', type: 'انشاءات', region: 'منطقة الرياض', status: 'مشاريع مستقبلية', docs: [], completion: 0 }
                     ],
@@ -1404,7 +1406,10 @@
                         { id: 1, name: 'عينة بلاط سيراميك', projectId: 5, supplierId: 2, submissionDate: '2025-07-15', status: 'معتمدة', description: 'بلاط سيراميك إسباني مقاس 60x60 لزوم أرضيات المكاتب.', notes: 'تم الاعتماد بعد التأكد من مطابقته للمواصفات.', files: [] },
                         { id: 2, name: 'عينة دهان خارجي', projectId: 1, supplierId: 1, submissionDate: '2025-07-20', status: 'تحت المراجعة', description: 'عينة دهان جوتن خارجي لون بيج.', notes: '', files: [] }
                     ],
-                    stagedProjects: [],
+                    stagedProjects: [
+                        { id: 5, name: 'إنشاء حديقة عامة', type: 'انشاءات', region: 'منطقة الرياض', status: 'proposed', docs: { karrasa: [], mokhatat: [], jadwal: [], wathiqa: [] } },
+                        { id: 1, name: 'تطوير الواجهة البحرية', type: 'انشاءات', region: 'منطقة مكة المكرمة', status: 'proposed', docs: { karrasa: [{name: 'Karrasa_Test.pdf'}], mokhatat: [], jadwal: [], wathiqa: [] } },
+                    ],
                     meta: {
                         availableCategories: ['إنشائي', 'معماري', 'كهرباء', 'ميكانيكا'],
                         availableSpecializations: ['مدني', 'تشطيبات', 'قوى', 'تكييف'],
@@ -1507,10 +1512,7 @@
                         },
                         'dashboard': () => App.UI.renderDashboard(),
                         'projects-sub': () => App.UI.renderSummaryCards(),
-                        'tendering-sub': () => {
-                            document.getElementById('tender-new-project-page').classList.add('hidden');
-                            document.getElementById('tendering-cards-view').classList.remove('hidden');
-                        },
+                        'tendering-sub': () => App.UI.renderStagedProjects(),
                         'database-specs-sub': () => {}, // No specific render needed, it's a container for cards
                         'karrasa-page': () => {}, //App.UI.showKarrasaListView(),
                         'boq-items-page': () => {}, //App.UI.renderBoqItemsTable(),
@@ -1533,7 +1535,7 @@
                     renderDashboard() {
                         const projects = App.DB.projects;
                         document.getElementById('kpi-total').textContent = projects.length;
-                        document.getElementById('kpi-ongoing').textContent = projects.filter(p => p.status === 'المشاريع الجاري طرحها').length;
+                        document.getElementById('kpi-ongoing').textContent = projects.filter(p => p.status === 'مشاريع جاهزة للطرح').length;
                         document.getElementById('kpi-previous').textContent = projects.filter(p => p.status === 'المشاريع السابقة').length;
                         document.getElementById('kpi-proposed').textContent = projects.filter(p => p.status === 'المشاريع المقترحة').length;
 
@@ -1544,7 +1546,7 @@
                         
                         const ongoingProjectsContainer = document.getElementById('ongoing-projects-summary-container');
                         const averageContainer = document.getElementById('average-completion-container');
-                        const ongoingProjects = projects.filter(p => p.status === 'المشاريع الجاري طرحها');
+                        const ongoingProjects = projects.filter(p => p.status === 'مشاريع جاهزة للطرح');
                         
                         if(ongoingProjects.length > 0) {
                             const averageCompletion = ongoingProjects.reduce((sum, p) => sum + p.completion, 0) / ongoingProjects.length;
@@ -1570,7 +1572,7 @@
                                     </div>`).join('');
                         } else {
                             averageContainer.innerHTML = '';
-                            ongoingProjectsContainer.innerHTML = '<p class="text-center text-gray-500 py-8">لا توجد مشاريع جاري طرحها حالياً.</p>';
+                            ongoingProjectsContainer.innerHTML = '<p class="text-center text-gray-500 py-8">لا توجد مشاريع جاهزة للطرح حالياً.</p>';
                         }
                     },
                     
@@ -1581,7 +1583,7 @@
                         container.classList.remove('hidden');
                         const statuses = { 
                             "المشاريع السابقة": { count: App.DB.projects.filter(p=>p.status==='المشاريع السابقة').length, icon: '📜' }, 
-                            "المشاريع الجاري طرحها": { count: App.DB.projects.filter(p=>p.status==='المشاريع الجاري طرحها').length, icon: '⏳' }, 
+                            "مشاريع جاهزة للطرح": { count: App.DB.projects.filter(p=>p.status==='مشاريع جاهزة للطرح').length, icon: '⏳' }, 
                             "المشاريع المقترحة": { count: App.DB.projects.filter(p=>p.status==='المشاريع المقترحة').length, icon: '💡' },
                             "مشاريع جاري دراستها": { count: App.DB.projects.filter(p => p.status === 'مشاريع جاري دراستها').length, icon: '🧐' },
                             "مشاريع مستقبلية": { count: App.DB.projects.filter(p => p.status === 'مشاريع مستقبلية').length, icon: '🗓️' }
@@ -1752,6 +1754,65 @@
                             </div>
                         `;
                     },
+
+                    renderStagedProjects() {
+                        const container = document.getElementById('staged-projects-container');
+                        const noProjectsMsg = document.getElementById('no-staged-projects-msg');
+                        const projects = App.DB.stagedProjects;
+
+                        if (!container || !noProjectsMsg) return;
+
+                        if (projects.length === 0) {
+                            container.innerHTML = '';
+                            noProjectsMsg.classList.remove('hidden');
+                        } else {
+                            noProjectsMsg.classList.add('hidden');
+                            container.innerHTML = projects.map(proj => {
+                                const docTypes = App.DB.meta.docTypeMeta;
+                                const docsHtml = Object.keys(docTypes).map(key => `
+                                    <div class="mb-3">
+                                        <h5 class="font-semibold text-sm mb-2">${docTypes[key].icon} ${docTypes[key].name}</h5>
+                                        <div class="staged-docs-container p-2 rounded-lg min-h-[50px]">
+                                            ${proj.docs[key] && proj.docs[key].length > 0
+                                                ? proj.docs[key].map(doc => `<div class="staged-file-preview">${doc.name}</div>`).join('')
+                                                : `<p class="text-xs text-gray-400 p-2">لم يتم إرفاق ملفات.</p>`
+                                            }
+                                        </div>
+                                        <button class="add-staged-doc-btn mt-2 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200" data-project-id="${proj.id}" data-doc-type="${key}">+ إضافة</button>
+                                    </div>
+                                `).join('');
+
+                                return `
+                                <div class="staged-project-accordion" data-id="${proj.id}">
+                                    <button class="staged-project-accordion-toggle ${proj.status === 'tendered' ? 'tendered' : 'proposed'}">
+                                        <div class="text-right flex-grow">
+                                            <h4 class="font-bold text-lg">${proj.name}</h4>
+                                            <p class="text-sm">${proj.region} - ${proj.type}</p>
+                                        </div>
+                                        <div class="flex items-center gap-4 flex-shrink-0 ml-4">
+                                            <div class="text-center">
+                                                <span class="text-xs font-semibold">الحالة</span>
+                                                <p class="font-bold">${proj.status === 'tendered' ? 'تم طرحه' : 'مقترح'}</p>
+                                            </div>
+                                            <svg class="w-6 h-6 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </div>
+                                    </button>
+                                    <div class="staged-project-accordion-content hidden p-6 bg-white border-t">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                            ${docsHtml}
+                                        </div>
+                                        <div class="mt-6 pt-4 border-t flex justify-end items-center flex-wrap gap-3">
+                                            <button class="remove-staged-project-btn bg-red-100 text-red-700 text-sm font-bold py-2 px-4 rounded-lg hover:bg-red-200 transition-colors" data-id="${proj.id}">إزالة من التحضير</button>
+                                            <button class="update-project-status-btn bg-gray-200 text-gray-800 text-sm font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-2" data-id="${proj.id}" data-status="المشاريع المقترحة"><span>💡</span> مشروع مقترح</button>
+                                            <button class="update-project-status-btn bg-gray-200 text-gray-800 text-sm font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-2" data-id="${proj.id}" data-status="مشاريع جاري دراستها"><span>🧐</span> مشروع جاري دراسته</button>
+                                            <button class="update-project-status-btn bg-gray-200 text-gray-800 text-sm font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition-colors flex items-center gap-2" data-id="${proj.id}" data-status="مشاريع مستقبلية"><span>🗓️</span> مشروع مستقبلي</button>
+                                            <button class="tender-project-btn bg-green-600 text-white text-sm font-bold py-2 px-5 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2" data-id="${proj.id}"><span>🚀</span> طرح المشروع</button>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            }).join('');
+                        }
+                    },
                     
                     // --- MODAL & NOTIFICATION UI ---
                     showMessageModal(title, text, icon = 'ℹ️', iconBgColor = 'bg-blue-100') {
@@ -1797,6 +1858,9 @@
                         let title = 'إرفاق ملفات';
                         if (context.destination === 'project') {
                             title = `إرفاق ملفات لـ: ${App.DB.meta.docTypeMeta[context.docType].name}`;
+                        } else if (context.destination === 'stagedProject') {
+                             const project = App.DB.stagedProjects.find(p => p.id == context.projectId);
+                             title = `إرفاق ملفات لـ: ${project.name} (${App.DB.meta.docTypeMeta[context.docType].name})`;
                         } else if (context.destination === 'models') {
                             title = 'إرفاق ملفات للنماذج';
                         } else if (context.destination === 'buildingModels') {
@@ -1927,27 +1991,38 @@
                     handleAddFileSubmit(e) {
                         e.preventDefault();
                         const modal = e.target.closest('#addFileModal');
-                        const context = App.state.currentAddFileContext.destination;
+                        const context = App.state.currentAddFileContext;
                         const files = document.getElementById('attachFileInput').files;
                         if (files.length === 0) return;
 
-                        const ds = App.DB._getDataSource(context);
-                        if (!ds) return;
+                        if (context.destination === 'stagedProject') {
+                            const project = App.DB.stagedProjects.find(p => p.id == context.projectId);
+                            if (project) {
+                                Array.from(files).forEach(file => {
+                                    project.docs[context.docType].push({ name: file.name, file: file });
+                                });
+                                App.DB.logActivity('إعداد المشاريع', project.name, 'إضافة ملف', `تمت إضافة ${files.length} ملفات إلى ${App.DB.meta.docTypeMeta[context.docType].name}`);
+                                App.UI.renderStagedProjects();
+                            }
+                        } else {
+                            const ds = App.DB._getDataSource(context.destination);
+                            if (!ds) return;
+                            
+                            Array.from(files).forEach(file => {
+                                const newFile = {
+                                    id: `file-${Date.now()}-${Math.random()}`,
+                                    type: 'file',
+                                    name: file.name,
+                                    fileType: file.type,
+                                    content: null, // In a real app, this would be uploaded and a URL stored
+                                    parent: ds.path[ds.path.length - 1]
+                                };
+                                ds.source.push(newFile);
+                                App.DB.logActivity('الملفات', file.name, 'إضافة', `تمت إضافة ملف جديد في ${ds.rootName}`);
+                            });
+                            App.UI.renderFolderViewer(ds.page, ds.source, ds.path, ds.rootName, context.destination);
+                        }
                         
-                        Array.from(files).forEach(file => {
-                            const newFile = {
-                                id: `file-${Date.now()}-${Math.random()}`,
-                                type: 'file',
-                                name: file.name,
-                                fileType: file.type,
-                                content: null, // In a real app, this would be uploaded and a URL stored
-                                parent: ds.path[ds.path.length - 1]
-                            };
-                             ds.source.push(newFile);
-                             App.DB.logActivity('الملفات', file.name, 'إضافة', `تمت إضافة ملف جديد في ${ds.rootName}`);
-                        });
-                        
-                        App.UI.renderFolderViewer(ds.page, ds.source, ds.path, ds.rootName, context);
                         modal.classList.add('hidden');
                     },
                     openSampleModal(sampleId = null) {
@@ -2024,6 +2099,64 @@
                             App.UI.renderSamplesPage();
                             confirmationModal.classList.add('hidden');
                         };
+                    },
+                    openAddStagedProjectModal() {
+                        const modal = document.getElementById('addStagedProjectModal');
+                        const listContainer = document.getElementById('staged-project-selection-list');
+                        if (!modal || !listContainer) return;
+
+                        const stagedProjectIds = App.DB.stagedProjects.map(p => p.id);
+                        const eligibleProjects = App.DB.projects.filter(p => 
+                            p.status === 'المشاريع المقترحة' && !stagedProjectIds.includes(p.id)
+                        );
+
+                        if (eligibleProjects.length === 0) {
+                            listContainer.innerHTML = '<p class="text-center text-gray-500">لا توجد مشاريع مقترحة متاحة للإضافة حالياً.</p>';
+                        } else {
+                            listContainer.innerHTML = eligibleProjects.map(p => `
+                                <label class="flex items-center p-3 hover:bg-gray-100 rounded-lg cursor-pointer">
+                                    <input type="checkbox" class="form-checkbox h-5 w-5 rounded text-yellow-600" data-project-id="${p.id}">
+                                    <span class="mr-4">${p.name} <span class="text-sm text-gray-500">(${p.region})</span></span>
+                                </label>
+                            `).join('');
+                        }
+
+                        modal.classList.remove('hidden');
+                    },
+                    handleRemoveStagedProject(projectId) {
+                        const project = App.DB.stagedProjects.find(p => p.id == projectId);
+                        if (!project) return;
+                        
+                        const confirmationModal = document.getElementById('confirmationModal');
+                        confirmationModal.querySelector('#confirmationModalTitle').textContent = 'تأكيد الإزالة';
+                        confirmationModal.querySelector('#confirmationModalText').textContent = `هل أنت متأكد من إزالة مشروع "${project.name}" من قائمة التحضير؟`;
+                        confirmationModal.classList.remove('hidden');
+                        
+                        const confirmBtn = document.getElementById('confirmDeleteBtn');
+                        confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+                        document.getElementById('confirmDeleteBtn').onclick = () => {
+                            App.DB.stagedProjects = App.DB.stagedProjects.filter(p => p.id != projectId);
+                            App.DB.logActivity('إعداد المشاريع', project.name, 'إزالة', 'تمت إزالة المشروع من التحضير');
+                            App.UI.renderStagedProjects();
+                            confirmationModal.classList.add('hidden');
+                        };
+                    },
+                    handleUpdateProjectStatus(projectId, newStatus) {
+                        const projectIndex = App.DB.projects.findIndex(p => p.id == projectId);
+                        if (projectIndex === -1) return;
+                        
+                        const project = App.DB.projects[projectIndex];
+                        const oldStatus = project.status;
+                        project.status = newStatus;
+
+                        App.DB.stagedProjects = App.DB.stagedProjects.filter(p => p.id != projectId);
+                        
+                        App.DB.logActivity('حالة المشاريع', project.name, 'تغيير الحالة', `تم تغيير حالة المشروع من "${oldStatus}" إلى "${newStatus}"`);
+                        App.UI.renderStagedProjects();
+                        App.UI.showMessageModal('نجاح', `تم تحديث حالة المشروع "${project.name}" بنجاح.`, '✅', 'bg-green-100');
+                    },
+                    handleTenderProject(projectId) {
+                        this.handleUpdateProjectStatus(projectId, 'مشاريع جاهزة للطرح');
                     }
                 },
 
@@ -2079,7 +2212,7 @@
 
                     // Main content event delegation
                     this.DOM.mainContent.addEventListener('click', e => {
-                        const delegatedTarget = e.target.closest('.summary-card, .nav-link-card, .functional-card, .breadcrumb-btn, .folder-item, .file-item, .add-folder-btn, .add-model-file-btn, .delete-item-btn, .back-to-suppliers-list, .back-to-database-specs, #add-new-sample-btn, .edit-sample-btn, .delete-sample-btn');
+                        const delegatedTarget = e.target.closest('.summary-card, .nav-link-card, .functional-card, .breadcrumb-btn, .folder-item, .file-item, .add-folder-btn, .add-model-file-btn, .delete-item-btn, .back-to-suppliers-list, .back-to-database-specs, #add-new-sample-btn, .edit-sample-btn, .delete-sample-btn, .staged-project-accordion-toggle, #add-staged-project-btn, .add-staged-doc-btn, .remove-staged-project-btn, .update-project-status-btn, .tender-project-btn');
 
                         if (!delegatedTarget) return;
 
@@ -2090,11 +2223,6 @@
                         if (delegatedTarget.classList.contains('nav-link-card')) {
                             e.preventDefault();
                             this.UI.showPage(delegatedTarget.dataset.page);
-                            return;
-                        }
-                        if (delegatedTarget.classList.contains('functional-card')) {
-                            const pageId = delegatedTarget.id.replace('show-', '');
-                            this.UI.showPage(pageId);
                             return;
                         }
                         if (delegatedTarget.matches('.breadcrumb-btn, .folder-item, .file-item, .add-folder-btn, .add-model-file-btn, .delete-item-btn')) {
@@ -2121,18 +2249,83 @@
                             this.handlers.handleDeleteSample(delegatedTarget.dataset.id);
                             return;
                         }
+                        if (delegatedTarget.classList.contains('staged-project-accordion-toggle')) {
+                            const content = delegatedTarget.nextElementSibling;
+                            const arrow = delegatedTarget.querySelector('svg');
+                            content.classList.toggle('hidden');
+                            arrow.classList.toggle('rotate-180');
+                            return;
+                        }
+                        if (delegatedTarget.matches('#add-staged-project-btn')) {
+                            this.handlers.openAddStagedProjectModal();
+                            return;
+                        }
+                        if (delegatedTarget.matches('.add-staged-doc-btn')) {
+                            const projectId = delegatedTarget.dataset.projectId;
+                            const docType = delegatedTarget.dataset.docType;
+                            this.UI.openAddFileModal({ destination: 'stagedProject', projectId, docType });
+                            return;
+                        }
+                        if (delegatedTarget.matches('.remove-staged-project-btn')) {
+                            this.handlers.handleRemoveStagedProject(delegatedTarget.dataset.id);
+                            return;
+                        }
+                        if (delegatedTarget.matches('.update-project-status-btn')) {
+                            this.handlers.handleUpdateProjectStatus(delegatedTarget.dataset.id, delegatedTarget.dataset.status);
+                            return;
+                        }
+                        if (delegatedTarget.matches('.tender-project-btn')) {
+                            this.handlers.handleTenderProject(delegatedTarget.dataset.id);
+                            return;
+                        }
+
+                        if (delegatedTarget.classList.contains('functional-card')) {
+                            const pageId = delegatedTarget.id.replace('show-', '');
+                            this.UI.showPage(pageId);
+                            return;
+                        }
                     });
 
                     // Close modals
                     document.body.addEventListener('click', e => {
-                        if (e.target.classList.contains('close-modal')) {
-                            e.target.closest('.modal-backdrop').classList.add('hidden');
+                        if (e.target.classList.contains('close-modal') || e.target.id === 'cancelDeleteBtn') {
+                           e.target.closest('.modal-backdrop')?.classList.add('hidden');
                         }
                     });
+
                      // Form Submissions
                     document.getElementById('addFolderForm')?.addEventListener('submit', this.handlers.handleAddFolderSubmit.bind(this.handlers));
                     document.getElementById('addFileForm')?.addEventListener('submit', this.handlers.handleAddFileSubmit.bind(this.handlers));
                     document.getElementById('addSampleForm')?.addEventListener('submit', this.handlers.handleSampleFormSubmit.bind(this.handlers));
+
+                    // Modal Buttons
+                    document.getElementById('confirm-add-staged-project')?.addEventListener('click', () => {
+                        const selectedCheckboxes = document.querySelectorAll('#staged-project-selection-list input[type="checkbox"]:checked');
+                        if (selectedCheckboxes.length === 0) {
+                            App.UI.showMessageModal('تنبيه', 'الرجاء اختيار مشروع واحد على الأقل.', '⚠️', 'bg-yellow-100');
+                            return;
+                        }
+
+                        selectedCheckboxes.forEach(checkbox => {
+                            const projectId = parseInt(checkbox.dataset.projectId);
+                            const project = App.DB.projects.find(p => p.id === projectId);
+                            if (project && !App.DB.stagedProjects.some(p => p.id === projectId)) {
+                                const newStagedProject = {
+                                    id: project.id,
+                                    name: project.name,
+                                    type: project.type,
+                                    region: project.region,
+                                    status: 'proposed', // Initial status
+                                    docs: { karrasa: [], mokhatat: [], jadwal: [], wathiqa: [] }
+                                };
+                                App.DB.stagedProjects.push(newStagedProject);
+                                App.DB.logActivity('إعداد المشاريع', project.name, 'إضافة للتحضير', 'تمت إضافة المشروع لمرحلة الإعداد للطرح');
+                            }
+                        });
+
+                        document.getElementById('addStagedProjectModal').classList.add('hidden');
+                        App.UI.renderStagedProjects();
+                    });
                 }
             };
 
