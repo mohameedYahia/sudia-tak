@@ -480,11 +480,6 @@
                                     <h3 class="font-bold text-xl portal-theme-text">كراسات الشروط</h3>
                                     <p class="text-sm text-gray-500 mt-2">إنشاء وتعديل كراسات الشروط كنماذج.</p>
                                 </div>
-                                <div id="show-boq-items-page" class="functional-card cursor-pointer bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
-                                    <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mb-4"><span class="text-4xl">📝</span></div>
-                                    <h3 class="font-bold text-xl portal-theme-text">بنود جدول الكميات</h3>
-                                    <p class="text-sm text-gray-500 mt-2">إدارة البنود الفردية المستخدمة في جداول الكميات.</p>
-                                </div>
                                 <div id="show-boq-templates-page" class="functional-card cursor-pointer bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
                                     <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-4"><span class="text-4xl">📋</span></div>
                                     <h3 class="font-bold text-xl portal-theme-text">قوالب جدول الكميات</h3>
@@ -551,31 +546,6 @@
                     </div>
 
 
-                    <div id="boq-items-page" class="page-content hidden">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold" style="color: var(--olive-dark);">بنود جدول الكميات</h2>
-                            <button class="back-to-tendering-cards bg-gray-800 text-white text-sm rounded-lg px-4 py-2 hover:bg-black transition-colors">→ الرجوع</button>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl shadow-lg">
-                            <div class="flex items-center gap-4 mb-4">
-                                <button id="add-boq-item-btn" class="bg-blue-600 text-white text-sm rounded-lg px-4 py-2 hover:bg-blue-700"><span>➕</span> إضافة بند</button>
-                                <button id="boq-import-excel" class="bg-teal-600 text-white text-sm rounded-lg px-4 py-2 hover:bg-teal-700 flex items-center gap-2"><span>📤</span> استيراد من Excel</button>
-                                <button id="boq-export-all" class="bg-green-600 text-white text-sm rounded-lg px-4 py-2 hover:bg-green-700 flex items-center gap-2"><span>⬇️</span> تحميل الكل (Excel)</button>
-                                <button id="boq-export-selected" disabled class="bg-yellow-500 text-white text-sm rounded-lg px-4 py-2 hover:bg-yellow-600 flex items-center gap-2"><span>⬇️</span> تحميل المحدد (Excel)</button>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full data-table">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th class="w-12"><input type="checkbox" id="boq-select-all-checkbox"></th>
-                                            <th>رقم البند</th><th>اسم البند</th><th>وحدة القياس</th><th>السعر</th><th>بيان الأعمال</th><th>الفئة</th><th>التخصص</th><th>إجراءات</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="boq-items-table-body"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                     
                     <input type="file" id="excel-file-input" class="hidden" accept=".xlsx, .xls">
                     <input type="file" id="word-file-input" class="hidden" accept=".docx">
@@ -941,7 +911,6 @@
                 const sidebar = document.getElementById('sidebar');
                 let currentProjectStatus = '', currentRegion = 'all', newProjectData = {}, currentAddFileContext = {};
                 let currentDocumentListViewContext = {};
-                const boqItemsPage = document.getElementById('boq-items-page');
                 const karrasaPage = document.getElementById('karrasa-page');
                 const boqTemplatesPage = document.getElementById('boq-templates-page');
                 const tenderNewProjectPage = document.getElementById('tender-new-project-page');
@@ -1013,14 +982,13 @@
                     
                     if (pageId === 'tendering-sub') {
                         tenderingCardsView.classList.remove('hidden');
-                        [karrasaPage, boqItemsPage, boqTemplatesPage, tenderNewProjectPage].forEach(p => p.classList.add('hidden'));
+                        [karrasaPage, boqTemplatesPage, tenderNewProjectPage].forEach(p => p.classList.add('hidden'));
                     } else if (pageId === 'projects-sub') {
                         renderSummaryCards();
                     } else if (pageId === 'dashboard') {
                         renderDashboard();
-                    } else if (['boq-items-page', 'boq-templates-page', 'karrasa-page', 'tender-new-project-page'].includes(pageId)) {
+                    } else if (['boq-templates-page', 'karrasa-page', 'tender-new-project-page'].includes(pageId)) {
                         document.getElementById('tendering-sub').classList.remove('hidden');
-                        if (pageId === 'boq-items-page') renderBoqItemsTable();
                         if (pageId === 'boq-templates-page') showBoqTemplatesListView();
                         if (pageId === 'karrasa-page') showKarrasaListView();
                         if (pageId === 'tender-new-project-page') renderStagedProjectsPage();
@@ -1582,7 +1550,6 @@
 
                 // --- BOQ ITEMS ---
                 const boqItemModal = document.getElementById('addBoqItemModal'), boqItemForm = document.getElementById('addBoqItemForm'), boqItemsTableBody = document.getElementById('boq-items-table-body');
-                document.getElementById('show-boq-items-page')?.addEventListener('click', () => { tenderingCardsView.classList.add('hidden'); showPage('boq-items-page'); });
                 function exportToExcel(data, filename) { const headers = {"number":"رقم البند", "name":"اسم البند", "unit":"وحدة القياس", "price":"السعر التقديري", "scope":"بيان الأعمال", "category":"الفئة", "specialization":"التخصص"}; const dataToExport = data.map(item => Object.keys(headers).reduce((obj, key) => ({...obj, [headers[key]]: item[key]}), {})); const ws = XLSX.utils.json_to_sheet(dataToExport); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); XLSX.writeFile(wb, `${filename}.xlsx`); }
                 function updateExportSelectedButton() { const selectedCheckboxes = document.querySelectorAll('.boq-item-checkbox:checked'); document.getElementById('boq-export-selected').disabled = selectedCheckboxes.length === 0; }
                 function renderBoqItemsTable() { if (!boqItemsTableBody) return; boqItemsTableBody.innerHTML = boqItems.map(item => `<tr><td class="px-2"><input type="checkbox" class="boq-item-checkbox" data-id="${item.id}"></td><td>${item.number}</td><td>${item.name}</td><td>${item.unit}</td><td>${item.price}</td><td class="max-w-xs truncate" title="${item.scope}">${item.scope}</td><td>${item.category}</td><td>${item.specialization}</td><td class="space-x-2 space-x-reverse whitespace-nowrap"><button class="edit-boq-item-btn text-blue-600 hover:text-blue-800" data-id="${item.id}">تعديل</button><button class="delete-boq-item-btn text-red-600 hover:text-red-800" data-id="${item.id}">حذف</button></td></tr>`).join(''); updateExportSelectedButton(); }

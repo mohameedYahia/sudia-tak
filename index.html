@@ -590,32 +590,6 @@
                         </div>
                     </div>
 
-                    <!-- BOQ Items Page -->
-                    <div id="boq-items-page" class="page-content hidden">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold" style="color: var(--olive-dark);">بنود جدول الكميات</h2>
-                            <button class="back-to-database-specs bg-gray-800 text-white text-sm rounded-lg px-4 py-2 hover:bg-black transition-colors">→ الرجوع</button>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl shadow-lg">
-                            <div class="flex items-center gap-4 mb-4">
-                                <button id="add-boq-item-btn" class="bg-blue-600 text-white text-sm rounded-lg px-4 py-2 hover:bg-blue-700"><span>➕</span> إضافة بند</button>
-                                <button id="boq-import-excel" class="bg-teal-600 text-white text-sm rounded-lg px-4 py-2 hover:bg-teal-700 flex items-center gap-2"><span>📤</span> استيراد من Excel</button>
-                                <button id="boq-export-all" class="bg-green-600 text-white text-sm rounded-lg px-4 py-2 hover:bg-green-700 flex items-center gap-2"><span>⬇️</span> تحميل الكل (Excel)</button>
-                                <button id="boq-export-selected" disabled class="bg-yellow-500 text-white text-sm rounded-lg px-4 py-2 hover:bg-yellow-600 flex items-center gap-2"><span>⬇️</span> تحميل المحدد (Excel)</button>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full data-table">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th class="w-12"><input type="checkbox" id="boq-select-all-checkbox"></th>
-                                            <th>رقم البند</th><th>اسم البند</th><th>وحدة القياس</th><th>السعر</th><th>بيان الأعمال</th><th>الفئة</th><th>التخصص</th><th>رسم توضيحي للبند</th><th>تحليل البند</th><th>إجراءات</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="boq-items-table-body"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                     
                     <input type="file" id="excel-file-input" class="hidden" accept=".xlsx, .xls">
                     <input type="file" id="word-file-input" class="hidden" accept=".docx">
@@ -723,11 +697,6 @@
                                 <div class="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center mb-4"><span class="text-4xl">📑</span></div>
                                 <h3 class="font-bold text-xl portal-theme-text">كراسة الشروط والمواصفات</h3>
                                 <p class="text-sm text-gray-500 mt-2">إنشاء وتعديل كراسات الشروط كنماذج.</p>
-                            </div>
-                            <div id="show-boq-items-page" class="functional-card cursor-pointer bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
-                                <div class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mb-4"><span class="text-4xl">📝</span></div>
-                                <h3 class="font-bold text-xl portal-theme-text">بنود جدول الكميات</h3>
-                                <p class="text-sm text-gray-500 mt-2">إدارة البنود الفردية المستخدمة في جداول الكميات.</p>
                             </div>
                             <div id="show-boq-templates-page" class="functional-card cursor-pointer bg-white p-6 rounded-xl shadow-lg flex flex-col items-center text-center">
                                 <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-4"><span class="text-4xl">📋</span></div>
@@ -1535,7 +1504,6 @@
                         'tendering-sub': () => App.UI.renderStagedProjects(),
                         'database-specs-sub': () => {}, // No specific render needed, it's a container for cards
                         'karrasa-page': () => {}, //App.UI.showKarrasaListView(),
-                        'boq-items-page': () => {}, //App.UI.renderBoqItemsTable(),
                         'boq-templates-page': () => {}, //App.UI.showBoqTemplatesListView(),
                         'models-page': () => App.UI.renderFolderViewer('models-page', App.DB.modelsData, App.state.currentModelPath, 'النماذج', 'models'),
                         'building-models-sub': () => App.UI.renderFolderViewer('building-models-sub', App.DB.buildingModelsData, App.state.currentBuildingModelPath, 'نماذج المباني', 'buildingModels'),
